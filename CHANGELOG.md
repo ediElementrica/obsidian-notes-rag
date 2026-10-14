@@ -1,6 +1,23 @@
 # CHANGELOG
 
 
+## v1.4.3 (2026-10-14)
+
+### Bug Fixes
+
+- Skip Excalidraw drawing data when indexing
+  ([#32](https://github.com/proofsh/obsidian-notes-rag/pull/32),
+  [`f9f279c`](https://github.com/proofsh/obsidian-notes-rag/commit/f9f279cf12ef4c0ffaa8e515d46fa46e3366ad5d))
+
+Excalidraw notes store the drawing as an encoded compressed-json (or json) fence. It has no spaces,
+  so it either became one chunk larger than the embedding limit or, with the token-split fallback,
+  many meaningless chunks that pollute search. Strip compressed-json fences in any note; in
+  Excalidraw notes also strip json drawing fences, the "switch to Excalidraw view" banner, and block
+  ids. The Text Elements section, which holds the drawing's real text, is kept.
+
+Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+
+
 ## v1.4.2 (2026-10-14)
 
 ### Bug Fixes
