@@ -1,6 +1,141 @@
 # CHANGELOG
 
 
+## v1.4.1 (2026-10-14)
+
+### Bug Fixes
+
+- Declare LinkResolver for type checking in indexer
+  ([#29](https://github.com/proofsh/obsidian-notes-rag/pull/29),
+  [`9cbc065`](https://github.com/proofsh/obsidian-notes-rag/commit/9cbc065fa42ffa28022aeaaa20a83858a67893b3))
+
+LinkResolver was imported only inside function bodies, so pyright flagged the string annotations on
+  build_resolver and file_links as undefined. Add a TYPE_CHECKING-only import; runtime imports are
+  unchanged, so there is no circular-import risk.
+
+Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+
+### Chores
+
+- **deps**: Bump actions/checkout from 5 to 7
+  ([#19](https://github.com/proofsh/obsidian-notes-rag/pull/19),
+  [`001da51`](https://github.com/proofsh/obsidian-notes-rag/commit/001da51f824b4f273604bde2ea22d3b14767f5f8))
+
+Bumps [actions/checkout](https://github.com/actions/checkout) from 5 to 7. - [Release
+  notes](https://github.com/actions/checkout/releases) -
+  [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md) -
+  [Commits](https://github.com/actions/checkout/compare/v5...v7)
+
+--- updated-dependencies: - dependency-name: actions/checkout dependency-version: '7'
+
+dependency-type: direct:production
+
+update-type: version-update:semver-major ...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+- **deps**: Bump astral-sh/setup-uv from 5 to 7
+  ([#20](https://github.com/proofsh/obsidian-notes-rag/pull/20),
+  [`7791524`](https://github.com/proofsh/obsidian-notes-rag/commit/7791524a8f5cfac2d69215b64d394665a1e3e42c))
+
+Bumps [astral-sh/setup-uv](https://github.com/astral-sh/setup-uv) from 5 to 7. - [Release
+  notes](https://github.com/astral-sh/setup-uv/releases) -
+  [Commits](https://github.com/astral-sh/setup-uv/compare/v5...v7)
+
+--- updated-dependencies: - dependency-name: astral-sh/setup-uv dependency-version: '7'
+
+dependency-type: direct:production
+
+update-type: version-update:semver-major ...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+- **deps**: Bump the minor-and-patch group across 1 directory with 8 updates
+  ([#28](https://github.com/proofsh/obsidian-notes-rag/pull/28),
+  [`5c27d64`](https://github.com/proofsh/obsidian-notes-rag/commit/5c27d645681670d4a7197830604d4d8463e8e6c0))
+
+Bumps the minor-and-patch group with 8 updates in the / directory:
+
+| Package | From | To | | --- | --- | --- | |
+  [mcp](https://github.com/modelcontextprotocol/python-sdk) | `2.0.0` | `2.3.0` | |
+  [click](https://github.com/pallets/click) | `8.3.1` | `8.5.0` | |
+  [platformdirs](https://github.com/tox-dev/platformdirs) | `4.5.1` | `4.12.3` | |
+  [chonkie](https://github.com/chonkie-inc/chonkie) | `1.5.2` | `1.7.0` | |
+  [setproctitle](https://github.com/dvarrazzo/py-setproctitle) | `1.3.7` | `1.3.8` | |
+  [sqlite-vec](https://TODO.com) | `0.1.6` | `0.1.9` | |
+  [pytest](https://github.com/pytest-dev/pytest) | `9.0.2` | `9.1.1` | |
+  [pyright](https://github.com/RobertCraigie/pyright-python) | `1.1.407` | `1.1.414` |
+
+Updates `mcp` from 2.0.0 to 2.3.0 - [Release
+  notes](https://github.com/modelcontextprotocol/python-sdk/releases) -
+  [Changelog](https://github.com/modelcontextprotocol/python-sdk/blob/main/RELEASE.md) -
+  [Commits](https://github.com/modelcontextprotocol/python-sdk/compare/v2.0.0...v2.3.0)
+
+Updates `click` from 8.3.1 to 8.5.0 - [Release notes](https://github.com/pallets/click/releases) -
+  [Changelog](https://github.com/pallets/click/blob/main/CHANGES.md) -
+  [Commits](https://github.com/pallets/click/compare/8.3.1...8.5.0)
+
+Updates `platformdirs` from 4.5.1 to 4.12.3 - [Release
+  notes](https://github.com/tox-dev/platformdirs/releases) -
+  [Changelog](https://github.com/tox-dev/platformdirs/blob/main/docs/changelog.rst) -
+  [Commits](https://github.com/tox-dev/platformdirs/compare/4.5.1...4.12.3)
+
+Updates `chonkie` from 1.5.2 to 1.7.0 - [Release
+  notes](https://github.com/chonkie-inc/chonkie/releases) -
+  [Commits](https://github.com/chonkie-inc/chonkie/compare/v1.5.2...v1.7.0)
+
+Updates `setproctitle` from 1.3.7 to 1.3.8 -
+  [Changelog](https://github.com/dvarrazzo/py-setproctitle/blob/master/HISTORY.rst) -
+  [Commits](https://github.com/dvarrazzo/py-setproctitle/compare/version-1.3.7...version-1.3.8)
+
+Updates `sqlite-vec` from 0.1.6 to 0.1.9
+
+Updates `pytest` from 9.0.2 to 9.1.1 - [Release
+  notes](https://github.com/pytest-dev/pytest/releases) -
+  [Changelog](https://github.com/pytest-dev/pytest/blob/main/CHANGELOG.rst) -
+  [Commits](https://github.com/pytest-dev/pytest/compare/9.0.2...9.1.1)
+
+Updates `pyright` from 1.1.407 to 1.1.414 - [Release
+  notes](https://github.com/RobertCraigie/pyright-python/releases) -
+  [Commits](https://github.com/RobertCraigie/pyright-python/compare/v1.1.407...v1.1.414)
+
+--- updated-dependencies: - dependency-name: mcp dependency-version: 2.3.0
+
+dependency-type: direct:production
+
+update-type: version-update:semver-minor
+
+dependency-group: minor-and-patch
+
+- dependency-name: click dependency-version: 8.5.0
+
+- dependency-name: platformdirs dependency-version: 4.12.3
+
+- dependency-name: chonkie dependency-version: 1.7.0
+
+- dependency-name: setproctitle dependency-version: 1.3.8
+
+update-type: version-update:semver-patch
+
+- dependency-name: sqlite-vec dependency-version: 0.1.9
+
+- dependency-name: pytest dependency-version: 9.1.1
+
+dependency-type: direct:development
+
+- dependency-name: pyright dependency-version: 1.1.414
+
+dependency-group: minor-and-patch ...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+
+
 ## v1.4.0 (2026-08-14)
 
 ### Features
