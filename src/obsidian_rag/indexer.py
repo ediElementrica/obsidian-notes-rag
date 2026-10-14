@@ -8,12 +8,15 @@ import uuid
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Iterator, Optional, List, Dict, Tuple
+from typing import TYPE_CHECKING, Iterator, Optional, List, Dict, Tuple
 
 import httpx
 import yaml
 from chonkie import RecursiveChunker
 from chonkie.types.recursive import RecursiveLevel, RecursiveRules
+
+if TYPE_CHECKING:
+    from .links import LinkResolver
 
 
 @dataclass
@@ -182,6 +185,24 @@ _FENCED_CODE_RE = re.compile(
     re.DOTALL,
 )
 
+# Excalidraw notes embed the drawing as an encoded data block. It has no
+# meaning as text, so it is removed before chunking. The "## Text Elements"
+# section holds the drawing's real text and is kept.
+_COMPRESSED_JSON_RE = re.compile(r"^```compressed-json[ \t]*\n.*?^```[ \t]*$\n?", re.DOTALL | re.MULTILINE)
+_EXCALIDRAW_JSON_RE = re.compile(r"^```json[ \t]*\n.*?^```[ \t]*$\n?", re.DOTALL | re.MULTILINE)
+_EXCALIDRAW_BANNER_RE = re.compile(r"^==⚠.*EXCALIDRAW VIEW.*⚠==[ \t]*$\n?", re.MULTILINE)
+_BLOCK_ID_RE = re.compile(r"[ \t]+\^[A-Za-z0-9_-]+[ \t]*$", re.MULTILINE)
+
+
+def _strip_drawing_data(body: str, frontmatter: Dict) -> str:
+    """Remove encoded drawing data that would become meaningless chunks."""
+    body = _COMPRESSED_JSON_RE.sub("", body)
+    if "excalidraw-plugin" in frontmatter:
+        body = _EXCALIDRAW_JSON_RE.sub("", body)
+        body = _EXCALIDRAW_BANNER_RE.sub("", body)
+        body = _BLOCK_ID_RE.sub("", body)
+    return body
+
 # U+2028 LINE SEPARATOR — not used in markdown, invisible to the chunker's
 # delimiter rules, but preserves the character count so token budgets stay
 # accurate.  Restored to \n after chunking.
@@ -236,6 +257,10 @@ def _build_rules(cfg: IndexerConfig) -> RecursiveRules:
         RecursiveLevel(delimiters="\n"),
         RecursiveLevel(delimiters=[". ", "! ", "? "]),
         RecursiveLevel(whitespace=True),
+        # Last resort: split by token count. Without this, text that the
+        # levels above cannot break (long runs of short words under chonkie
+        # >= 1.7, or space-free content) can exceed chunk_size.
+        RecursiveLevel(),
     ])
 
     return RecursiveRules(levels=levels)
@@ -272,6 +297,7 @@ def chunk_markdown(
     """
     cfg = config or _default_config
     frontmatter, body = parse_frontmatter(content)
+    body = _strip_drawing_data(body, frontmatter)
 
     if not body.strip():
         return []
