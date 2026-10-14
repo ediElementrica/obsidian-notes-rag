@@ -1,6 +1,33 @@
 # CHANGELOG
 
 
+## v1.4.2 (2026-10-14)
+
+### Bug Fixes
+
+- Enforce chunk_size with a token-split fallback level
+  ([#30](https://github.com/proofsh/obsidian-notes-rag/pull/30),
+  [`cdf05da`](https://github.com/proofsh/obsidian-notes-rag/commit/cdf05dacb70e48265c97c5e4e2e6b9a951344202))
+
+chonkie 1.7.0 applies min_characters_per_chunk while splitting, so a whitespace split of short words
+  merges back into one oversized piece. Our custom rules ended at the whitespace level, leaving
+  nothing to cut it further, and chunk_size stopped bounding chunk length. Append the token-split
+  level that chonkie's own default rules end with.
+
+Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+
+- Isolate tests from the developer's config and environment
+  ([#31](https://github.com/proofsh/obsidian-notes-rag/pull/31),
+  [`3fec28c`](https://github.com/proofsh/obsidian-notes-rag/commit/3fec28c6d3c0e5835c7d204613900cf1bf51b8cc))
+
+test_index_with_path_filter passed only on machines with a configured vault; in CI it exited with
+  "No vault configured". Pass --vault to the test explicitly, and add an autouse fixture that points
+  the config path at a temp file and clears OBSIDIAN_RAG_* variables, so no test reads the real
+  config.toml or environment.
+
+Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+
+
 ## v1.4.1 (2026-10-14)
 
 ### Bug Fixes
